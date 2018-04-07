@@ -16,7 +16,7 @@ void createFollowSet(char *followsFile, int FollowsTable[][numberTerminals]);
 void readGrammar(char *grammarFile, node grammar[]);
 void createParseTable(int ParseTable[][numberTerminals]);
 
-void parseInputSourceCode(char *testcaseFile);
+parseTree parseInputSourceCode(char *testcaseFile);
 //parseTree parseInputSourceCode(char *testcaseFile, int ParseTable[][numberTerminals]);
 //void printParseTree(parseTree PT, char *outfile);
 

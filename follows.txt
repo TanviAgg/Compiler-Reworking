@@ -1,0 +1,44 @@
+mainFunction ENDOFINPUT
+stmtsAndFunctionDefs END
+moreStmtAndFunctionDefs END
+stmtOrFunctionDef INT REAL STRING MATRIX ID SQO IF READ PRINT FUNID FUNCTION END
+stmt INT REAL STRING MATRIX ID SQO IF READ PRINT FUNID FUNCTION END ELSE ENDIF OP NOT NUM RNUM CL 
+functionDef INT REAL STRING MATRIX ID SQO IF READ PRINT FUNID FUNCTION END
+parameter_list SQC
+type ID
+remainingList SQC
+declarationStmt SEMICOLON
+var_list SEMICOLON SQC
+more_ids SEMICOLON SQC
+assignmentStmt_type1 SEMICOLON
+assignmentStmt_type2 SEMICOLON
+leftHandSide_singleVar ASSIGNOP
+leftHandSide_listVar ASSIGNOP
+rightHandSide_type1 SEMICOLON
+rightHandSide_type2 SEMICOLON
+sizeExpression SEMICOLON
+ifStmt SEMICOLON
+matchIfStmt ENDIF
+otherStmts OP NOT ID NUM RNUM ENDIF ELSE
+ioStmt SEMICOLON
+funCallStmt SEMICOLON
+inputParameterList CL
+listVar CL
+arithmeticExpression CL SEMICOLON
+arithmeticTerm PLUS MINUS CL SEMICOLON
+arithmeticExp CL SEMICOLON
+arithmeticT PLUS MINUS CL SEMICOLON
+factor MUL DIV PLUS MINUS CL SEMICOLON
+operator_lowPrecedence OP NUM RNUM ID STR SQO
+operator_highPrecedence OP NUM RNUM ID STR SQO
+constrainedVars LT LE EQ GT GE NE CL
+var COMMA MUL DIV PLUS MINUS CL SEMICOLON
+matrix COMMA MUL DIV PLUS MINUS CL SEMICOLON
+rows SQC
+moreRows SQC
+row SEMICOLON SQC
+remainingColElements SEMICOLON SQC
+matrixElement COMMA MUL DIV PLUS MINUS CL SEMICOLON
+logicalOp OP
+booleanExpression CL
+relationalOp ID NUM RNUM

@@ -32,12 +32,14 @@ void push_rhs(int);
 struct tree{
 	int id;
 	struct tree *firstChild;
-	struct tree *siblings;
+	struct tree *sibling;
 	char *lexeme;
 	struct tree *parent;
 	int lineNo;
 };
 
+typedef struct tree tree;
 typedef struct tree *parseTree;
 
+// parseTree root;
 #endif
