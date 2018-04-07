@@ -15,6 +15,180 @@ FirstAndFollow  *ComputeFirstAndFollowSets(grammar G): This function takes as in
 The weight for the above is only 5 marks out of 45 marks reserved for stage 1 module. If a student opts  not to develop the module for computation of First and follow sets, then he/she can use the manually computed FIRST and FOLLOW sets, and populate in the appropriate data structures.
 
 */
+int IDtoterm(int id, char *c){
+	switch(id){
+	case 0: strcpy(c, "mainFunction");
+break;
+	case 1: strcpy(c, "stmtsAndFunctionDefs");
+break;
+	case 2: strcpy(c, "moreStmtAndFunctionDefs");
+break;
+	case 3: strcpy(c, "stmtOrFunctionDef") ;
+break;
+	case 4: strcpy(c, "stmt") ;
+break;
+	case 5: strcpy(c, "functionDef") ;
+break;
+	case 6: strcpy(c, "parameter_list") ;
+break;
+	case 7: strcpy(c, "type") ;
+break;
+	case 8: strcpy(c, "remainingList");
+break;
+	case 9: strcpy(c, "declarationStmt") ;
+break;
+	case 10: strcpy(c, "var_list") ;
+break;
+	case 11: strcpy(c, "more_ids") ;
+break;
+	case 12: strcpy(c, "assignmentStmt_type1") ;
+break;
+	case 13: strcpy(c, "assignmentStmt_type2") ;
+break;
+	case 14: strcpy(c, "leftHandSide_singleVar") ;
+break;
+	case 15: strcpy(c, "leftHandSide_listVar");
+break;
+	case 16: strcpy(c, "rightHandSide_type1") ;
+break;
+	case 17: strcpy(c, "rightHandSide_type2"); 
+break;
+	case 18: strcpy(c, "sizeExpression") ;
+break;
+	case 19: strcpy(c, "ifStmt") ;
+break;
+	case 20: strcpy(c, "matchIfStmt");
+break;
+	case 21: strcpy(c, "otherStmts") ;
+break;
+	case 22: strcpy(c, "ioStmt") ;
+break;
+	case 23: strcpy(c, "funCallStmt");
+break;
+	case 24: strcpy(c, "inputParameterList") ;
+break;
+	case 25: strcpy(c, "listVar") ;
+break;
+	case 26: strcpy(c, "arithmeticExpression") ;
+break;
+	case 27: strcpy(c, "arithmeticTerm") ;
+break;
+	case 28: strcpy(c, "arithmeticExp") ;
+break;
+	case 29: strcpy(c, "arithmeticT") ;
+break;
+	case 30: strcpy(c, "factor") ;
+break;
+	case 31: strcpy(c, "operator_lowPrecedence") ;
+break;
+	case 32: strcpy(c, "operator_highPrecedence") ;
+break;
+	case 33: strcpy(c, "constrainedVars") ;
+break;
+	case 34: strcpy(c, "var") ;
+break;
+	case 35: strcpy(c, "matrix") ;
+break;
+	case 36: strcpy(c, "rows") ;
+break;
+	case 37: strcpy(c, "moreRows") ;
+break;
+	case 38: strcpy(c, "row");
+break;
+	case 39: strcpy(c, "remainingColElements");
+break;
+	case 40: strcpy(c, "matrixElement") ;
+break;
+	case 41: strcpy(c, "logicalOp") ;
+break;
+	case 42: strcpy(c, "booleanExpression") ;
+break;
+	case 43: strcpy(c, "relationalOp") ;
+break;
+	case 44: strcpy(c, "MAIN") ;
+break;
+	case 45: strcpy(c, "SQO") ;
+break;
+	case 46: strcpy(c, "SQC") ;
+break;
+	case 47: strcpy(c, "END") ;
+break;
+	case 48: strcpy(c, "SEMICOLON") ;
+break;
+	case 49: strcpy(c, "FUNCTION") ;
+break;
+	case 50: strcpy(c, "ASSIGNOP") ;
+break;
+	case 51: strcpy(c, "FUNID") ;
+break;
+	case 52: strcpy(c, "ID") ;
+break;
+	case 53: strcpy(c, "INT");
+break;
+	case 54: strcpy(c, "REAL") ;
+break;
+	case 55: strcpy(c, "STRING") ;
+break;
+	case 56: strcpy(c, "MATRIX") ;
+break;
+	case 57: strcpy(c, "COMMA") ;
+break;
+	case 58: strcpy(c, "SIZE") ;
+break;
+	case 59: strcpy(c, "IF") ;
+break;
+	case 60: strcpy(c, "OP") ;
+break;
+	case 61: strcpy(c, "CL") ;
+break;
+	case 62: strcpy(c, "ELSE") ;
+break;
+	case 63: strcpy(c, "ENDIF");
+break;
+	case 64: strcpy(c, "READ") ;
+break;
+	case 65: strcpy(c, "PRINT");
+break;
+	case 66: strcpy(c, "PLUS") ;
+break;
+	case 67: strcpy(c, "MINUS");
+break;
+	case 68: strcpy(c, "MUL") ;
+break;
+	case 69: strcpy(c, "DIV") ;
+break;
+	case 70: strcpy(c, "NUM") ;
+break;
+	case 71: strcpy(c, "RNUM");
+break;
+	case 72: strcpy(c, "STR") ;
+break;
+	case 73: strcpy(c, "AND") ;
+break;
+	case 74: strcpy(c, "OR") ;
+break;
+	case 75: strcpy(c, "NOT");
+break;
+	case 76: strcpy(c, "LT") ;
+break;
+	case 77: strcpy(c, "LE") ;
+break;
+	case 78: strcpy(c, "EQ") ;
+break;
+	case 79: strcpy(c, "GT") ;
+break;
+	case 80: strcpy(c, "GE") ;
+break;
+	case 81: strcpy(c, "NE") ;
+break;
+	case 82: strcpy(c, "ENDOFINPUT") ;
+break;
+	case 83: strcpy(c, "eps") ;
+break;
+	default:
+	return -1;
+}
+}
 int terminalToID(char *terminal){
 	if(strcmp(terminal, "MAIN")==0) return 0;
 	else if(strcmp(terminal, "SQO")==0) return 1;
@@ -369,7 +543,61 @@ void printStack(){
 	printf("\n");
 }
 
-void parseInputSourceCode(char *testcaseFile){
+tree* expand_node(tree* node, int rule){
+	tree *temp, *temp3;
+	stack *temp2;
+
+	temp = (tree*)malloc(sizeof(tree));
+	temp->id = grammar[rule].next->data;
+	temp->lexeme = NULL;
+	temp->firstChild = NULL;
+	temp->parent = node;
+	node->firstChild = temp;
+
+	temp2 = grammar[rule].next->next;
+	while(temp2){
+		temp3 = (tree*)malloc(sizeof(tree));
+		temp3->id = temp2->data;
+		temp3->lexeme = NULL;
+		temp3->firstChild = NULL;
+		temp3->parent = node;
+		temp2 = temp2->next;
+		temp->sibling = temp3;
+		temp = temp3;
+	}
+	return node;
+}
+
+void printParseTree(tree* root){
+	tree* temp = root;
+
+}
+
+void printNodeInfo(tree *node){
+	char* c, *d, *e;
+	c = (char*)malloc(sizeof(char)*20);
+	memset(c,0,20);
+	IDtoterm(node->id,c);
+	printf("****ID - %s (%d), line no. - %d\n", c, node->id, node->lineNo);
+	if(node->firstChild)
+		printf("****child exists");
+	if(node->lexeme)
+		printf("****lexeme - %s\n", node->lexeme);
+	if(node->sibling){
+		memset(c,0,20);
+		IDtoterm(node->sibling->id,c);
+		printf("****sibling id - %s(%d), line no.- %d\n", c, node->sibling->id , node->sibling->lineNo );
+	}
+	memset(c,0,20);
+	IDtoterm(node->parent->id,c);
+	printf("****Parent id - %s(%d)\n",c, node->parent->id);
+	printf("\n");
+
+	return;
+
+}
+
+parseTree parseInputSourceCode(char *testcaseFile){
 	char* b = (char*) malloc(sizeof(char)*20);
 	int k = 20;
 	FILE *fp = fopen(testcaseFile, "r");
@@ -385,14 +613,41 @@ void parseInputSourceCode(char *testcaseFile){
 	printf("Token - %d, %s\n",L.id, L.value);
 	push(termToID("ENDOFINPUT"));
 	push(termToID("mainFunction"));
+	parseTree root = (parseTree)malloc(sizeof(tree));
+	root->id = L.id;
+	root->lineNo = L.lineNo;
+	root->lexeme = NULL;
+	root->firstChild = NULL;
+	root->parent = NULL;
+	root->sibling = NULL;
 	printStack();
+
+	// printNodeInfo(root);
+
+
+	tree* temptree = root;
 
 	while(L.id != (termToID("ENDOFINPUT")-44)){
 		if(top->data < 44){
 			if(ParseTable[top->data][L.id] != 0){
 				temp =  pop();
-				if(grammar[ParseTable[temp][L.id]-1].next->data != termToID("eps"))
+				if(grammar[ParseTable[temp][L.id]-1].next->data != termToID("eps")){
 					push_rhs(ParseTable[temp][L.id]-1);
+					temptree = expand_node(temptree,ParseTable[temp][L.id]-1)->firstChild;
+					// printNodeInfo(temptree);
+				}
+				
+				else{
+					if(temptree->sibling)
+						temptree = temptree->sibling;
+					else{
+						temptree = temptree->parent;
+						while(temptree->sibling==NULL){
+							temptree = temptree->parent;
+						}
+						temptree = temptree->sibling;
+					}
+				}
 				printStack();
 			}
 			else{
@@ -412,6 +667,20 @@ void parseInputSourceCode(char *testcaseFile){
 		}
 		else if((top->data >= 44) && (top->data != termToID("ENDOFINPUT"))){
 			if((top->data - 44) == L.id){
+
+				temptree->lexeme = L.value;
+				temptree->lineNo = L.lineNo;
+				printNodeInfo(temptree);
+				
+				if(temptree->sibling)
+					temptree = temptree->sibling;
+				else{
+					temptree = temptree->parent;
+					while(temptree->sibling==NULL){
+						temptree = temptree->parent;
+					}
+					temptree = temptree->sibling;
+				}
 				temp = pop();
 				printStack();
 				L = getNextToken(fp, b, k);
@@ -458,7 +727,7 @@ void parseInputSourceCode(char *testcaseFile){
 	else if((L.id == (termToID("ENDOFINPUT")-44)) && (top->data == termToID("ENDOFINPUT"))){
 		printf("Successful Compilation. Your code is syntactically correct.\n");
 		printStack();
-		return;
+		return root;
 	}
 	fclose(fp);
 }
