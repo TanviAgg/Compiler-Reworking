@@ -231,7 +231,8 @@ int main(int argc, char const *argv[])
 		printf("\n");
 
 		printf("Parse table made successfully!\n");
-		parseInputSourceCode(filename);
+		tree* temptree = parseInputSourceCode(filename);
+		printParseTree(temptree);
 	}	
 	return 0;
 }

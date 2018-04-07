@@ -18,7 +18,8 @@ void createParseTable(int ParseTable[][numberTerminals]);
 
 parseTree parseInputSourceCode(char *testcaseFile);
 //parseTree parseInputSourceCode(char *testcaseFile, int ParseTable[][numberTerminals]);
-//void printParseTree(parseTree PT, char *outfile);
+void printParseTree(parseTree PT);
+void printParseTreeHelper(parseTree pt);
 
 int errorInParser;
 

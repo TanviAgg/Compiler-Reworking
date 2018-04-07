@@ -543,12 +543,13 @@ void printStack(){
 	printf("\n");
 }
 
-tree* expand_node(tree* node, int rule){
+tree* expand_node(tree* node, int rule, int lineNo){
 	tree *temp, *temp3;
 	stack *temp2;
 
 	temp = (tree*)malloc(sizeof(tree));
 	temp->id = grammar[rule].next->data;
+	temp->lineNo = lineNo;
 	temp->lexeme = NULL;
 	temp->firstChild = NULL;
 	temp->parent = node;
@@ -557,6 +558,7 @@ tree* expand_node(tree* node, int rule){
 	temp2 = grammar[rule].next->next;
 	while(temp2){
 		temp3 = (tree*)malloc(sizeof(tree));
+		temp3->lineNo = lineNo;
 		temp3->id = temp2->data;
 		temp3->lexeme = NULL;
 		temp3->firstChild = NULL;
@@ -569,8 +571,53 @@ tree* expand_node(tree* node, int rule){
 }
 
 void printParseTree(tree* root){
+	printf("%-20s%-8s%-10s%-14s%-24s%-20s%-20s\n","lexemeCurrentNode","LineNo","token","valueIfnumber", "parentNodeSymbol", "isLeafNode(yes/no)","NodeSymbol");
 	tree* temp = root;
+	if(temp->firstChild){
+		printParseTreeHelper(temp->firstChild);
+	}
+	printf("%-20s%-8s%-10s%-14s%-24s%-20s%-20s\n", "----", "0", "----", "----", "ROOT", "no", "mainFunction");
+	
+	if(root->firstChild && root->firstChild->sibling){
+		tree* temp2 = root->firstChild->sibling;
+		while(temp2){
+			printParseTreeHelper(temp2);
+			temp2 = temp2->sibling;
+		}
+	}
 
+}
+void printParseTreeHelper(tree *root){
+	if(root== NULL){
+		return;
+	}
+	printParseTreeHelper(root->firstChild);
+	
+	char *c = (char*)malloc(sizeof(char)*20);
+	memset(c,0,20);
+	IDtoterm(root->id,c);
+	char *d = (char*)malloc(sizeof(char)*20);
+	memset(d,0,20);
+	IDtoterm(root->parent->id,d);
+	if(root->id > 43){
+		if(root->id == 70 || root->id ==71)
+			printf("%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n",root->lexeme, root->lineNo, c,root->lexeme, d, "yes", c);
+		else{
+			printf("%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n",root->lexeme, root->lineNo, c,"----", d, "yes", c);
+		}
+	}
+	else{
+		printf("%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n","----", root->lineNo, "----","----", d, "no", c);
+	}
+	
+	if(root->firstChild && root->firstChild->sibling){
+		tree* temp2 = root->firstChild->sibling;
+		while(temp2){
+			printParseTreeHelper(temp2);
+			temp2 = temp2->sibling;
+		}
+	}
+	return;
 }
 
 void printNodeInfo(tree *node){
@@ -615,7 +662,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 	push(termToID("mainFunction"));
 	parseTree root = (parseTree)malloc(sizeof(tree));
 	root->id = L.id;
-	root->lineNo = L.lineNo;
+	root->lineNo = 0;
 	root->lexeme = NULL;
 	root->firstChild = NULL;
 	root->parent = NULL;
@@ -633,7 +680,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 				temp =  pop();
 				if(grammar[ParseTable[temp][L.id]-1].next->data != termToID("eps")){
 					push_rhs(ParseTable[temp][L.id]-1);
-					temptree = expand_node(temptree,ParseTable[temp][L.id]-1)->firstChild;
+					temptree = expand_node(temptree,ParseTable[temp][L.id]-1, L.lineNo)->firstChild;
 					// printNodeInfo(temptree);
 				}
 				
@@ -654,7 +701,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 				// printStack();
 				printf("Line number:%d Syntax error: No such rule available in grammar.\n",L.lineNo);
 				errorInParser = 1;
-				return;
+				return root;
 				// L = getNextToken(fp, b, k);
 				// // printf("Token - %d, %s\n",L.id, L.value);
 
@@ -699,7 +746,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 				idToTerminal(L.id,inputToken);
 				printf("Line number:%d Syntax error: %s (expected token) not equal to %s (input token).\n",L.lineNo, expectedToken, inputToken);
 				errorInParser = 1;
-				return;
+				return root;
 				// L = getNextToken(fp, b, k);
 				// // printf("Token - %d, %s\n",L.id, L.value);
 
@@ -714,7 +761,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 			printStack();
 			printf("Line number:%d Syntax error: Token mismatch (Reached bottom of stack).\n", L.lineNo);
 			errorInParser = 1;
-			return;
+			return root;
 		}
 		
 	}
@@ -722,7 +769,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 		printf("Line number:%d Syntax error: Stack not empty.\n", L.lineNo);
 		printStack();
 		errorInParser = 1;
-		return;
+		return root;
 	}
 	else if((L.id == (termToID("ENDOFINPUT")-44)) && (top->data == termToID("ENDOFINPUT"))){
 		printf("Successful Compilation. Your code is syntactically correct.\n");
@@ -731,6 +778,8 @@ parseTree parseInputSourceCode(char *testcaseFile){
 	}
 	fclose(fp);
 }
+
+
 /*
 
 parseTree   parseInputSourceCode(char *testcaseFile, table T): This function takes as input the source code file and parses using the rules as per the predictive parse table T. The function gets the tokens using lexical analysis interface and establishes the syntactic structure of the input source code using rules in T. The function must report all errors appropriately if the source code is syntactically incorrect. Error recovery must be implemented to list all errors. Parsers which report one error at a time and quit before listing all errors are considered bad, therefore students are advised to implement error recovery appropriately.
