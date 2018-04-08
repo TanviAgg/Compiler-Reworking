@@ -562,6 +562,7 @@ tree* expand_node(tree* node, int rule, int lineNo){
 		temp3->id = temp2->data;
 		temp3->lexeme = NULL;
 		temp3->firstChild = NULL;
+		temp3->sibling = NULL;
 		temp3->parent = node;
 		temp2 = temp2->next;
 		temp->sibling = temp3;
@@ -588,7 +589,7 @@ void printParseTree(tree* root){
 
 }
 void printParseTreeHelper(tree *root){
-	if(root== NULL){
+	if(root == NULL){
 		return;
 	}
 	printParseTreeHelper(root->firstChild);
@@ -600,7 +601,10 @@ void printParseTreeHelper(tree *root){
 	memset(d,0,20);
 	IDtoterm(root->parent->id,d);
 	if(root->id > 43){
-		if(root->id == 70 || root->id ==71)
+		if(root->id == 83){
+			printf("%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n","----", root->lineNo, c,"----", d, "yes", c);
+		}
+		else if(root->id == 70 || root->id ==71)
 			printf("%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n",root->lexeme, root->lineNo, c,root->lexeme, d, "yes", c);
 		else{
 			printf("%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n",root->lexeme, root->lineNo, c,"----", d, "yes", c);
@@ -609,7 +613,6 @@ void printParseTreeHelper(tree *root){
 	else{
 		printf("%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n","----", root->lineNo, "----","----", d, "no", c);
 	}
-	
 	if(root->firstChild && root->firstChild->sibling){
 		tree* temp2 = root->firstChild->sibling;
 		while(temp2){
@@ -657,7 +660,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 	int temp;
 	memset(b,0,sizeof(b));
 	tokenInfo L = getNextToken(fp, b, k); //getNextToken returns terminals between 0-39
-	printf("Token - %d, %s\n",L.id, L.value);
+	// printf("Token - %d, %s\n",L.id, L.value);
 	push(termToID("ENDOFINPUT"));
 	push(termToID("mainFunction"));
 	parseTree root = (parseTree)malloc(sizeof(tree));
@@ -667,7 +670,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 	root->firstChild = NULL;
 	root->parent = NULL;
 	root->sibling = NULL;
-	printStack();
+	// printStack();
 
 	// printNodeInfo(root);
 
@@ -681,10 +684,17 @@ parseTree parseInputSourceCode(char *testcaseFile){
 				if(grammar[ParseTable[temp][L.id]-1].next->data != termToID("eps")){
 					push_rhs(ParseTable[temp][L.id]-1);
 					temptree = expand_node(temptree,ParseTable[temp][L.id]-1, L.lineNo)->firstChild;
+					// tree* tocheck = temptree;
+					// while(tocheck){
+					// 	printNodeInfo(tocheck);
+					// 	tocheck = tocheck->sibling;
+					// }
 					// printNodeInfo(temptree);
 				}
 				
 				else{
+					temptree = expand_node(temptree,ParseTable[temp][L.id]-1, L.lineNo);
+					
 					if(temptree->sibling)
 						temptree = temptree->sibling;
 					else{
@@ -695,7 +705,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 						temptree = temptree->sibling;
 					}
 				}
-				printStack();
+				// printStack();
 			}
 			else{
 				// printStack();
@@ -717,21 +727,27 @@ parseTree parseInputSourceCode(char *testcaseFile){
 
 				temptree->lexeme = L.value;
 				temptree->lineNo = L.lineNo;
-				printNodeInfo(temptree);
+				// printf("Printed after line 724\n");
+				// printNodeInfo(temptree);
 				
 				if(temptree->sibling)
 					temptree = temptree->sibling;
 				else{
 					temptree = temptree->parent;
 					while(temptree->sibling==NULL){
-						temptree = temptree->parent;
+						if(temptree->parent){
+							temptree = temptree->parent;
+						}
+						else{
+							break;
+						}
 					}
 					temptree = temptree->sibling;
 				}
 				temp = pop();
-				printStack();
+				// printStack();
 				L = getNextToken(fp, b, k);
-				printf("Token - %d, %s\n",L.id, L.value);
+				// printf("Token - %d, %s\n",L.id, L.value);
 
 				//ignore Comment token
 				while(L.id == 39){
@@ -741,7 +757,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 				}
 			}
 			else{
-				printStack();
+				// printStack();
 				idToTerminal(top->data-44,expectedToken);
 				idToTerminal(L.id,inputToken);
 				printf("Line number:%d Syntax error: %s (expected token) not equal to %s (input token).\n",L.lineNo, expectedToken, inputToken);
@@ -758,7 +774,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 			}
 		}
 		else if(top->data == termToID("ENDOFINPUT")){
-			printStack();
+			// printStack();
 			printf("Line number:%d Syntax error: Token mismatch (Reached bottom of stack).\n", L.lineNo);
 			errorInParser = 1;
 			return root;
@@ -767,13 +783,13 @@ parseTree parseInputSourceCode(char *testcaseFile){
 	}
 	if((L.id == (termToID("ENDOFINPUT")-44)) && (top->data != termToID("ENDOFINPUT"))){
 		printf("Line number:%d Syntax error: Stack not empty.\n", L.lineNo);
-		printStack();
+		// printStack();
 		errorInParser = 1;
 		return root;
 	}
 	else if((L.id == (termToID("ENDOFINPUT")-44)) && (top->data == termToID("ENDOFINPUT"))){
 		printf("Successful Compilation. Your code is syntactically correct.\n");
-		printStack();
+		// printStack();
 		return root;
 	}
 	fclose(fp);

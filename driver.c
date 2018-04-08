@@ -184,54 +184,55 @@ int main(int argc, char const *argv[])
 	}
 	else if(choice==3){
 		createFirstSet("Ffirsts.txt", FirstsTable);
-		printf("Firsts table made successfully!\n");
+		// printf("Firsts table made successfully!\n");
 		createFollowSet("Ffollows.txt", FollowsTable);
-		printf("Follows table made successfully!\n");
+		// printf("Follows table made successfully!\n");
 		readGrammar("Fgrammar.txt", grammar);
-		printf("Grammar made successfully!\n");
-		int i, j;
-		for(i = 0; i < 84; i++ ){
-			printf("%d:",i);
-			for(j = 0; j<40; j++)
-				if(FirstsTable[i][j]==1)
-				printf("%d,",j);
-			printf("\n");
-		}
-		printf("\n");
-		printf("\n");
-		for(i = 0; i < 44; i++ ){
-			printf("%d:",i);
-			for(j = 0; j<39; j++)
-				if(FollowsTable[i][j]==1)
-				printf("%d,",j);
-			printf("\n");
-		}
-		printf("\n");
-		printf("\n");
-		node* temp;
-		for(i = 0; i < 86; i++){
-			printf("%d->",grammar[i].data);
-			temp = grammar[i].next;
-			while(temp){
-				printf("%d,",temp->data);
-				temp = temp->next;
-			}
-			printf("\n");
-		}
-		printf("\n");
-		printf("\n");
+		// printf("Grammar made successfully!\n");
+		// int i, j;
+		// for(i = 0; i < 84; i++ ){
+		// 	printf("%d:",i);
+		// 	for(j = 0; j<40; j++)
+		// 		if(FirstsTable[i][j]==1)
+		// 		printf("%d,",j);
+		// 	printf("\n");
+		// }
+		// printf("\n");
+		// printf("\n");
+		// for(i = 0; i < 44; i++ ){
+		// 	printf("%d:",i);
+		// 	for(j = 0; j<39; j++)
+		// 		if(FollowsTable[i][j]==1)
+		// 		printf("%d,",j);
+		// 	printf("\n");
+		// }
+		// printf("\n");
+		// printf("\n");
+		// node* temp;
+		// for(i = 0; i < 86; i++){
+		// 	printf("%d->",grammar[i].data);
+		// 	temp = grammar[i].next;
+		// 	while(temp){
+		// 		printf("%d,",temp->data);
+		// 		temp = temp->next;
+		// 	}
+		// 	printf("\n");
+		// }
+		// printf("\n");
+		// printf("\n");
 		createParseTable(ParseTable);
-		for(i = 0; i < 44; i++ ){
-			printf("%d:",i);
-			for(j = 0; j<39; j++)
-				printf("%d,",ParseTable[i][j]);
-			printf("\n");
-		}
-		printf("\n");
-		printf("\n");
+		// for(i = 0; i < 44; i++ ){
+		// 	printf("%d:",i);
+		// 	for(j = 0; j<39; j++)
+		// 		printf("%d,",ParseTable[i][j]);
+		// 	printf("\n");
+		// }
+		// printf("\n");
+		// printf("\n");
 
-		printf("Parse table made successfully!\n");
+		// printf("Parse table made successfully!\n");
 		tree* temptree = parseInputSourceCode(filename);
+		printf("\n");
 		printParseTree(temptree);
 	}	
 	return 0;

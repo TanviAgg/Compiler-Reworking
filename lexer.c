@@ -349,117 +349,55 @@ tokenInfo getNextToken(FILE *fp, buffer buff, bufferSize k)
 				break;
 
 			case 9:
-				switch(buff[offset]){
-					case 'a':
-						lexeme[index++] = buff[offset++];
-						if(buff[offset] == 'n'){
-							lexeme[index++] = buff[offset++];
-							if(buff[offset] == 'd'){
-								lexeme[index++] = buff[offset++];
-								if(buff[offset] == '.'){
-									lexeme[index++] = buff[offset++];
-									state = 13;
-									index = 0;
-									token.id = AND;
-									token.lineNo = lineNo;
-									strcpy(token.value, lexeme);
-									memset(lexeme, 0, sizeof(lexeme));
-									return token;
-								}
-								else{
-									lexeme[index++] = buff[offset++];
-									printf("LEXICAL ERROR 2: UNKNOWN PATTERN <%s> AT LINE <%d>.\n",lexeme, lineNo);
-									errorInLexer = 1;
-									error = 1;
-									break;
-								}
-							}
-							else{
-								lexeme[index++] = buff[offset++];
-								printf("LEXICAL ERROR 2: UNKNOWN PATTERN <%s> AT LINE <%d>.\n",lexeme, lineNo);
-								errorInLexer = 1;
-								error = 1;
-								break;
-							}
+				while(buff[offset]!= '.'){
+					if(buff[offset] == '\0'){
+						if(feof(fp)){
+							token.value = "$";
+							token.id = ENDOFINPUT;
+							token.lineNo = lineNo;
+							return token;
 						}
-						else{
-							lexeme[index++] = buff[offset++];
-							printf("LEXICAL ERROR 2: UNKNOWN PATTERN <%s> AT LINE <%d>.\n",lexeme, lineNo);
-							errorInLexer = 1;
-							error = 1;
-							break;
-						}
-						break;
-					case 'o':
-						lexeme[index++] = buff[offset++];
-						if(buff[offset] == 'r'){
-							lexeme[index++] = buff[offset++];
-							if(buff[offset] == '.'){
-								lexeme[index++] = buff[offset++];
-								state = 16;
-								index = 0;
-								token.id = OR;
-								token.lineNo = lineNo;
-								strcpy(token.value, lexeme);
-								memset(lexeme, 0, sizeof(lexeme));
-								return token;
-							}
-							else{
-								lexeme[index++] = buff[offset++];
-								printf("LEXICAL ERROR 2: UNKNOWN PATTERN <%s> AT LINE <%d>.\n",lexeme, lineNo);
-								errorInLexer = 1;
-								error = 1;
-								break;
-							}
-						}
-						else{
-							lexeme[index++] = buff[offset++];
-							printf("LEXICAL ERROR 2: UNKNOWN PATTERN <%s> AT LINE <%d>.\n",lexeme, lineNo);
-							errorInLexer = 1;
-							error = 1;
-							break;
-						}
-						break;
-					case 'n':
-						lexeme[index++] = buff[offset++];
-						if(buff[offset] == 'o'){
-							lexeme[index++] = buff[offset++];
-							if(buff[offset] == 't'){
-								lexeme[index++] = buff[offset++];
-								if(buff[offset] == '.'){
-									lexeme[index++] = buff[offset++];
-									state = 20;
-									index = 0;
-									token.id = NOT;
-									token.lineNo = lineNo;
-									strcpy(token.value, lexeme);
-									memset(lexeme, 0, sizeof(lexeme));
-									return token;
-								}
-								else{
-									lexeme[index++] = buff[offset++];
-									printf("LEXICAL ERROR 2: UNKNOWN PATTERN <%s> AT LINE <%d>.\n",lexeme, lineNo);
-									errorInLexer = 1;
-									error = 1;
-									break;
-								}
-							}
-							else{
-								lexeme[index++] = buff[offset++];
-								printf("LEXICAL ERROR 2: UNKNOWN PATTERN <%s> AT LINE <%d>.\n",lexeme, lineNo);
-								errorInLexer = 1;
-								error = 1;
-								break;
-							}
-						}
-						else{
-							lexeme[index++] = buff[offset++];
-							printf("LEXICAL ERROR 2: UNKNOWN PATTERN <%s> AT LINE <%d>.\n",lexeme, lineNo);
-							errorInLexer = 1;
-							error = 1;
-							break;
-						}
-						break;
+						memset(buff, 0, sizeof(buff));
+						fp = getStream(fp, buff, k);
+						offset = 0;
+					}
+					lexeme[index++] = buff[offset++];
+				}
+				
+				lexeme[index++] = buff[offset++];
+				lexeme[index] = '\0';
+				if(strcmp(lexeme, ".and.")==0){
+					state = 13;
+					index = 0;
+					token.id = AND;
+					token.lineNo = lineNo;
+					strcpy(token.value, lexeme);
+					memset(lexeme, 0, sizeof(lexeme));
+					return token;
+				} 
+				else if(strcmp(lexeme, ".or.")==0){
+					state = 16;
+					index = 0;
+					token.id = OR;
+					token.lineNo = lineNo;
+					strcpy(token.value, lexeme);
+					memset(lexeme, 0, sizeof(lexeme));
+					return token;
+				}
+				else if(strcmp(lexeme, ".not.") == 0){
+					state = 20;
+					index = 0;
+					token.id = NOT;
+					token.lineNo = lineNo;
+					strcpy(token.value, lexeme);
+					memset(lexeme, 0, sizeof(lexeme));
+					return token;
+				}
+				else{
+					printf("This error LEXICAL ERROR 2: UNKNOWN PATTERN <%s> AT LINE <%d>.\n",lexeme, lineNo);
+					errorInLexer = 1;
+					error = 1;
+					break;
 				}
 				break;
 			

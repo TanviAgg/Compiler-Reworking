@@ -1,3 +1,10 @@
 _main[]
+	string s;
 	int a;
+	s = "abcd"+"efgh";
+	a = 8;
+	a = 8.99;
+	if((a>b).or.(c>e))
+		b = a + c;
+	endif;
 end
