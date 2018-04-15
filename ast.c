@@ -303,7 +303,32 @@ parseTree createAST(parseTree root){
 		printf("going to firstChild now - %s\n", c);
 
 		root->firstChild = createAST(root->firstChild);
-		return root;
+		switch(root->id){
+			//type
+			case 7:
+			//lhs_singlevar
+			case 14:
+				root->parent->firstChild = root->firstChild;
+				root->firstChild->parent = root->parent;
+				tree* tempr = root->firstChild;
+				tempr->sibling = root->sibling;
+				free(root);
+				return tempr;
+				break;
+			//stmtOrFunctionDef
+			//case 3:
+				// root->parent->firstChild = root->firstChild;
+				// root->firstChild->parent = root->parent;
+				// tree* tempr = root->firstChild;
+				// tempr->sibling = root->sibling;
+				// free(root);
+				// return tempr;
+				// break;
+
+			default:
+				return root;
+		}
+		
 		// printParseTree(root);
 
 	}

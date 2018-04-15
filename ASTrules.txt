@@ -1,0 +1,284 @@
+TANVI AGGARWAL
+2015A7PS0140P
+
+AST rules
+
+
+mainFunction->MAIN SQO SQC stmtsAndFunctionDefs END
+{mainFunction.addr = makenode(stmtsAndFunctionDefs.addr)}
+
+stmtsAndFunctionDefs->stmtOrFunctionDef moreStmtAndFunctionDefs
+{stmtsAndFunctionDefs.addr = makenode(stmtOrFunctionDef.addr, moreStmtAndFunctionDefs.addr)}
+
+moreStmtAndFunctionDefs->stmtsAndFunctionDefs
+{moreStmtAndFunctionDefs.addr = stmtsAndFunctionDefs.addr}
+
+moreStmtAndFunctionDefs->eps
+{moreStmtAndFunctionDefs.addr = NULL}
+
+stmtOrFunctionDef->stmt
+{stmtOrFunctionDef.addr = stmt.addr}
+
+stmtOrFunctionDef->functionDef
+{stmtOrFunctionDef.addr = functionDef.addr}
+
+stmt->declarationStmt SEMICOLON
+{stmt.addr = declarationStmt.addr}
+
+stmt->assignmentStmt_type1 SEMICOLON
+{stmt.addr = assignmentStmt_type1.addr}
+
+stmt->assignmentStmt_type2 SEMICOLON
+{stmt.addr = assignmentStmt_type2.addr}
+
+stmt->ifStmt SEMICOLON
+{stmt.addr = ifStmt.addr}
+
+stmt->ioStmt SEMICOLON
+{stmt.addr = ioStmt.addr}
+
+stmt->funCallStmt SEMICOLON
+{stmt.addr = funCallStmt.addr}
+
+functionDef->FUNCTION SQO parameter_list1 SQC ASSIGNOP FUNID SQO parameter_list2 SQC stmtsAndFunctionDefs END
+{functionDef.addr = makenode(parameter_list1.addr, FUNID.addr, parameter_list2.addr, stmtsAndFunctionDefs.addr);
+makeleaf(FUNID, FUNID.entry)}
+
+parameter_list->type ID remainingList
+{parameter_list.addr = makenode(type.addr, ID.addr, remainingList.addr);
+makeleaf(ID, ID.entry)}
+
+type->INT
+{type.addr = makeleaf(INT, INT.entry)}
+
+type->REAL
+{type.addr = makeleaf(REAL, REAL.entry)}
+
+type->STRING
+{type.addr = makeleaf(STRING, STRING.entry)}
+
+type->MATRIX
+{type.addr = makeleaf(MATRIX, MATRIX.entry)}
+
+remainingList->COMMA parameter_list
+{remainingList.addr = parameter_list.addr}
+
+remainingList->eps
+{remainingList.addr = NULL}
+
+declarationStmt->type var_list
+{declarationStmt.addr = makenode(type.addr, var_list.addr)}
+
+var_list->ID more_ids
+{var_list.addr = makenode(ID.addr, more_ids.addr);
+ID.addr = makeleaf(ID, ID.entry)}
+
+more_ids->COMMA var_list
+{more_ids.addr = var_list.addr}
+
+more_ids->eps
+{more_ids.addr = NULL}
+
+assignmentStmt_type1->leftHandSide_singleVar ASSIGNOP rightHandSide_type1
+{assignmentStmt_type1.addr = makenode(leftHandSide_singleVar.addr, rightHandSide_type1.addr)}
+
+assignmentStmt_type2->leftHandSide_listVar ASSIGNOP rightHandSide_type2
+{assignmentStmt_type2.addr = makenode(leftHandSide_listVar.addr, rightHandSide_type2.addr)}
+
+leftHandSide_singleVar->ID
+{leftHandSide_singleVar.addr = makeleaf(ID, ID.entry)}
+
+leftHandSide_listVar->SQO var_list SQC
+{leftHandSide_listVar.addr = var_list.addr}
+
+rightHandSide_type1->arithmeticExpression
+{rightHandSide_type1.addr = arithmeticExpression.addr}
+
+rightHandSide_type1->sizeExpression
+{rightHandSide_type1.addr = sizeExpression.addr}
+
+rightHandSide_type1->funCallStmt
+{rightHandSide_type1.addr = funCallStmt.addr}
+
+rightHandSide_type2->sizeExpression
+{rightHandSide_type2.addr = sizeExpression.addr}
+
+rightHandSide_type2->funCallStmt
+{rightHandSide_type2.addr = funCallStmt.addr}
+
+sizeExpression->SIZE ID
+{sizeExpression.addr = makenode(SIZE.addr, ID.addr);
+SIZE.addr = makeleaf(SIZE, "@");
+ID.addr = makeleaf(ID, ID.entry)}
+
+ifStmt->IF OP booleanExpression CL stmt otherStmts matchIfStmt ENDIF
+{ifStmt.addr = makenode(IF.addr, booleanExpression.addr, stmt.addr, otherStmts.addr, matchIfStmt.addr)}
+
+matchIfStmt->ELSE otherStmts
+{matchIfStmt.addr = makenode(ELSE.addr, otherStmts.addr)}
+
+matchIfStmt->eps
+{matchIfStmt.addr = NULL}
+
+otherStmts->stmt otherStmts1
+{otherStmts = makenode(stmt.addr, otherStmts1.addr)}
+
+otherStmts->eps
+{otherStmts.addr = NULL}
+
+ioStmt->READ OP ID CL
+{ioStmt.addr = makenode(READ.addr, ID.addr);
+READ.addr = makeleaf(READ, "READ");
+ID.addr = makeleaf(ID, ID.entry)}
+
+ioStmt->PRINT OP ID CL
+{ioStmt.addr = makenode(PRINT.addr, ID.addr);
+PRINT.addr = makeleaf(PRINT, "PRINT");
+ID.addr = makeleaf(ID, ID.entry)}
+
+funCallStmt->FUNID OP inputParameterList CL
+{funCallStmt.addr = makenode(FUNID.addr, inputParameterList.addr);
+FUNID.addr = makeleaf(FUNID, FUNID.entry)}
+
+inputParameterList->var listVar
+{inputParameterList.addr = makenode(var.addr, listVar.addr)}
+
+inputParameterList->eps
+{inputParameterList.addr = NULL}
+
+listVar->COMMA inputParameterList
+{listVar.addr = inputParameterList.addr}
+
+listVar->eps
+{listVar.addr = NULL}
+
+arithmeticExpression->arithmeticTerm arithmeticExp
+{arithmeticExpression.addr = makenode(arithmeticTerm.addr, arithmeticExp.addr);
+arithmeticExpression.in = arithmeticTerm.op}
+
+arithmeticExp->operator_lowPrecedence arithmeticExpression
+{arithmeticExp.addr = arithmeticExpression.addr;
+arithmeticExp.in = operator_lowPrecedence.op}
+
+arithmeticExp->eps
+{arithmeticExp.addr = NULL}
+
+arithmeticTerm->factor arithmeticT
+{arithmeticTerm.addr = makenode(factor.addr, arithmeticT.addr)}
+
+arithmeticT->operator_highPrecedence arithmeticTerm
+{arithmeticT.addr = arithmeticTerm.addr;
+arithmeticT.in = operator_highPrecedence.op}
+
+arithmeticT->eps
+{arithmeticT.addr = NULL}
+
+factor->OP arithmeticExpression CL
+{factor.addr = arithmeticExpression.addr}
+
+factor->var
+{factor.addr = var.addr}
+
+operator_lowPrecedence->PLUS
+{operator_lowPrecedence.op = "+"}
+
+operator_lowPrecedence->MINUS
+{operator_lowPrecedence.op = "-"}
+
+operator_highPrecedence->MUL
+{operator_highPrecedence.op = "*"}
+
+operator_highPrecedence->DIV
+{operator_highPrecedence.op = "/"}
+
+booleanExpression->OP booleanExpression1 CL logicalOp OP booleanExpression2 CL
+{booleanExpression.addr = makenode(booleanExpression1.addr, booleanExpression2.addr);
+booleanExpression.in = logicalOp.op}
+
+booleanExpression->constrainedVars1 relationalOp constrainedVars2
+{booleanExpression.addr = makenode(constrainedVars1.addr, constrainedVars2.addr);
+booleanExpression.in = relationalOp.op}
+
+constrainedVars->ID
+{constrainedVars.addr = makeleaf(ID, ID.entry)}
+
+constrainedVars->NUM
+{constrainedVars.addr = makeleaf(NUM, NUM.val)}
+
+constrainedVars->RNUM
+{constrainedVars.addr = makeleaf(RNUM, RNUM.val)}
+
+var->NUM
+{var.addr = makeleaf(NUM, NUM.val)}
+
+var->RNUM
+{var.addr = makeleaf(RNUM, RNUM.val)}
+
+var->ID matrixElement
+{var.addr = makenode(ID.addr, matrixElement.addr);
+ID.addr = makeleaf(ID, ID.entry)}
+
+var->STR
+{var.addr = makeleaf(STR, STR.val)}
+
+var->matrix
+{var.addr = matrix.addr}
+
+matrix->SQO rows SQC
+{matrix.addr = rows.addr}
+
+rows->row moreRows
+{rows.addr = makenode(row.addr, moreRows.addr)}
+
+moreRows->SEMICOLON row moreRows1
+{moreRows.addr = makenode(row.addr, moreRows1.addr)}
+
+moreRows->eps
+{moreRows.addr = NULL}
+
+row->NUM remainingColElements
+{row.addr = makenode(NUM.addr, remainingColElements.addr);
+NUM.addr = makeleaf(NUM, NUM.val)}
+
+remainingColElements->COMMA NUM remainingColElements1
+{remainingColElements.addr = makenode(NUM.addr, remainingColElements.addr);
+NUM.addr = makeleaf(NUM, NUM.val)}
+
+remainingColElements->eps
+{remainingColElements.addr = NULL}
+
+matrixElement->SQO NUM COMMA NUM SQC
+{matrixElement.addr = makenode(NUM1.addr, NUM2.addr);
+NUM1.addr = makeleaf(NUM1, NUM1.val);
+NUM2.addr = makeleaf(NUM2, NUM2.val)}
+
+matrixElement->eps
+{matrixElement.addr = NULL}
+
+logicalOp->AND
+{logicalOp.op = "AND"}
+
+logicalOp->OR
+{logicalOp.op = "OR"}
+
+booleanExpression->NOT OP booleanExpression1 CL
+{booleanExpression.addr = booleanExpression1.addr;
+booleanExpression.in = "NOT"}
+
+relationalOp->LT
+{relationalOp.op = "LT"}
+
+relationalOp->LE
+{relationalOp.op = "LE"}
+
+relationalOp->EQ
+{relationalOp.op = "EQ"}
+
+relationalOp->GT
+{relationalOp.op = "GT"}
+
+relationalOp->GE
+{relationalOp.op = "GE"}
+
+relationalOp->NE
+{relationalOp.op = "NE"}

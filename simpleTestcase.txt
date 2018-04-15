@@ -1,4 +1,4 @@
-_main[]
-	
-	int a;
+_main[]	
+	int a,b;
+	a = 2 + 5;
 end
