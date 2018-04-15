@@ -36,6 +36,7 @@ struct tree{
 	char *lexeme;
 	struct tree *parent;
 	int lineNo;
+	int ruleUsed;
 };
 
 typedef struct tree tree;

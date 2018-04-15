@@ -550,6 +550,7 @@ tree* expand_node(tree* node, int rule, int lineNo){
 	temp = (tree*)malloc(sizeof(tree));
 	temp->id = grammar[rule].next->data;
 	temp->lineNo = lineNo;
+	temp->ruleUsed = 0;
 	temp->lexeme = NULL;
 	temp->firstChild = NULL;
 	temp->parent = node;
@@ -559,6 +560,7 @@ tree* expand_node(tree* node, int rule, int lineNo){
 	while(temp2){
 		temp3 = (tree*)malloc(sizeof(tree));
 		temp3->lineNo = lineNo;
+		temp3->ruleUsed = 0;
 		temp3->id = temp2->data;
 		temp3->lexeme = NULL;
 		temp3->firstChild = NULL;
@@ -623,6 +625,41 @@ void printParseTreeHelper(tree *root){
 	return;
 }
 
+// void printParseTreeHelper(tree *root){
+// 	if(root == NULL){
+// 		return;
+// 	}
+// 	printParseTreeHelper(root->firstChild);
+	
+// 	char *c = (char*)malloc(sizeof(char)*20);
+// 	memset(c,0,20);
+// 	IDtoterm(root->id,c);
+// 	char *d = (char*)malloc(sizeof(char)*20);
+// 	memset(d,0,20);
+// 	IDtoterm(root->parent->id,d);
+// 	if(root->id > 43){
+// 		if(root->id == 83){
+// 			printf("%-5d%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n",root->ruleUsed,"----", root->lineNo, c,"----", d, "yes", c);
+// 		}
+// 		else if(root->id == 70 || root->id ==71)
+// 			printf("%-5d%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n",root->ruleUsed,root->lexeme, root->lineNo, c,root->lexeme, d, "yes", c);
+// 		else{
+// 			printf("%-5d%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n",root->ruleUsed,root->lexeme, root->lineNo, c,"----", d, "yes", c);
+// 		}
+// 	}
+// 	else{
+// 		printf("%-5d%-20s%-8d%-10s%-14s%-24s%-20s%-20s\n",root->ruleUsed,"----", root->lineNo, "----","----", d, "no", c);
+// 	}
+// 	if(root->firstChild && root->firstChild->sibling){
+// 		tree* temp2 = root->firstChild->sibling;
+// 		while(temp2){
+// 			printParseTreeHelper(temp2);
+// 			temp2 = temp2->sibling;
+// 		}
+// 	}
+// 	return;
+// }
+
 void printNodeInfo(tree *node){
 	char* c, *d, *e;
 	c = (char*)malloc(sizeof(char)*20);
@@ -683,6 +720,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 				temp =  pop();
 				if(grammar[ParseTable[temp][L.id]-1].next->data != termToID("eps")){
 					push_rhs(ParseTable[temp][L.id]-1);
+					temptree->ruleUsed = ParseTable[temp][L.id];
 					temptree = expand_node(temptree,ParseTable[temp][L.id]-1, L.lineNo)->firstChild;
 					// tree* tocheck = temptree;
 					// while(tocheck){
@@ -693,6 +731,7 @@ parseTree parseInputSourceCode(char *testcaseFile){
 				}
 				
 				else{
+					temptree->ruleUsed = ParseTable[temp][L.id];
 					temptree = expand_node(temptree,ParseTable[temp][L.id]-1, L.lineNo);
 					
 					if(temptree->sibling)

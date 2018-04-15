@@ -10,6 +10,7 @@ int termToID(char *term);
 int terminalToID(char *terminal);
 int nonterminalToID(char *nonterminal);
 void idToTerminal(int id, char*c);
+int IDtoterm(int id, char*c);
 
 void createFirstSet(char *firstsFile, int FirstsTable[][numberTerminals+1]);
 void createFollowSet(char *followsFile, int FollowsTable[][numberTerminals]);
@@ -20,6 +21,7 @@ parseTree parseInputSourceCode(char *testcaseFile);
 //parseTree parseInputSourceCode(char *testcaseFile, int ParseTable[][numberTerminals]);
 void printParseTree(parseTree PT);
 void printParseTreeHelper(parseTree pt);
+void printNodeInfo(tree* node);
 
 int errorInParser;
 

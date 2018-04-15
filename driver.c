@@ -5,6 +5,7 @@
 #include "string.h"
 #include "lexer.h"
 #include "parser.h"
+#include "ast.h"
 
 
 void idToTerm(int id, char*c){
@@ -236,6 +237,12 @@ int main(int argc, char const *argv[])
 		tree* temptree = parseInputSourceCode(filename);
 		printf("\n");
 		printParseTree(temptree);
+		printf("------------------------------------\n");
+
+		printf("\n");
+		
+		createASTHelper(temptree);
+		// printParseTreeHelper(temptree);
 		printf("------------------------------------\n");
 		
 	}	
