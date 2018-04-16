@@ -217,15 +217,21 @@ parseTree createAST(parseTree root){
 		return;
 	}
 	if(root->sibling == NULL && root->firstChild != NULL){
-		if(root->id == 0 || root->id == 5 || root->id == 9 || root->id == 12 || root->id == 13 || root->id == 19 ||root->id == 22 || root->id == 23){
-			memset(c,0,20);
-			IDtoterm(root->id, c);
-			// printf("Node id %s\n", c );
-	
-			printf("skipped this node - %s\n", c);
-			return root->firstChild = createAST(root->firstChild);
-			// printParseTree(root);
+		if(root->id == 0 || root->id == 5 || root->id == 9 || root->id == 12 || root->id == 13 || root->id == 19 ||root->id == 22 || root->id == 23 || root->id == 26){
+			switch(root->id){
+				//arithmeticExpression
+				case 26:
+					root->firstChild = createAST(root->firstChild);
+					return root;
+					break;
+				default:
+					memset(c,0,20);
+					IDtoterm(root->id, c);
+					printf("skipped this node - %s\n", c);
+					return root->firstChild = createAST(root->firstChild);
+					break;
 
+			}
 		}
 		else{
 			root->parent->firstChild = root->firstChild;
@@ -248,7 +254,7 @@ parseTree createAST(parseTree root){
 		}
 	}
 	else if(root->sibling == NULL && root->firstChild == NULL){
-		if(root->id == 50 || root->id == 51 || root->id == 52 || root->id == 53 || root->id == 54 || root->id == 55 ||root->id == 58 || root->id == 59 || root->id == 64 || root->id == 65 || root->id == 66 || root->id == 67 || root->id == 68 || root->id == 69 ||root->id == 70 || root->id == 71 || root->id == 72 || root->id == 73 || root->id == 74 || root->id == 75 || root->id == 76 || root->id == 77 ||root->id == 78 || root->id == 79||root->id == 80 || root->id == 81 ){
+		if(root->id == 50 || root->id == 51 || root->id == 52 || root->id == 53 || root->id == 54 || root->id == 55 ||root->id == 56 ||root->id == 58 || root->id == 59 || root->id == 64 || root->id == 65 || root->id == 66 || root->id == 67 || root->id == 68 || root->id == 69 ||root->id == 70 || root->id == 71 || root->id == 72 || root->id == 73 || root->id == 74 || root->id == 75 || root->id == 76 || root->id == 77 ||root->id == 78 || root->id == 79||root->id == 80 || root->id == 81 ){
 			memset(c,0,20);
 			IDtoterm(root->id, c);
 			printf("useful terminal - %s\n", c);	
@@ -269,7 +275,7 @@ parseTree createAST(parseTree root){
 
 	}
 	else if(root->firstChild == NULL){
-		if(root->id == 50 || root->id == 51 || root->id == 52 || root->id == 53 || root->id == 54 || root->id == 55 ||root->id == 58 || root->id == 59 || root->id == 64 || root->id == 65 || root->id == 66 || root->id == 67 || root->id == 68 || root->id == 69 ||root->id == 70 || root->id == 71 || root->id == 72 || root->id == 73 || root->id == 74 || root->id == 75 || root->id == 76 || root->id == 77 ||root->id == 78 || root->id == 79||root->id == 80 || root->id == 81 ){
+		if(root->id == 50 || root->id == 51 || root->id == 52 || root->id == 53 || root->id == 54 || root->id == 55 || root->id == 56 ||root->id == 58 || root->id == 59 || root->id == 64 || root->id == 65 || root->id == 66 || root->id == 67 || root->id == 68 || root->id == 69 ||root->id == 70 || root->id == 71 || root->id == 72 || root->id == 73 || root->id == 74 || root->id == 75 || root->id == 76 || root->id == 77 ||root->id == 78 || root->id == 79||root->id == 80 || root->id == 81 ){
 			memset(c,0,20);
 			IDtoterm(root->id, c);
 			printf("useful terminal, moving to sibling - %s\n", c);
@@ -304,26 +310,57 @@ parseTree createAST(parseTree root){
 
 		root->firstChild = createAST(root->firstChild);
 		switch(root->id){
+			//op_low/op_high
+			// case 31:
+			// case 32:
 			//type
-			case 7:
-			//lhs_singlevar
-			case 14:
-				root->parent->firstChild = root->firstChild;
-				root->firstChild->parent = root->parent;
-				tree* tempr = root->firstChild;
-				tempr->sibling = root->sibling;
-				free(root);
-				return tempr;
-				break;
+			// case 7:
+			// //lhs_singlevar
+			// case 14:
+			// 	root->parent->firstChild = root->firstChild;
+			// 	root->firstChild->parent = root->parent;
+			// 	tree* tempr = root->firstChild;
+			// 	tempr->sibling = root->sibling;
+			// 	free(root);
+			// 	return tempr;
+			// 	break;
 			//stmtOrFunctionDef
-			//case 3:
-				// root->parent->firstChild = root->firstChild;
-				// root->firstChild->parent = root->parent;
-				// tree* tempr = root->firstChild;
-				// tempr->sibling = root->sibling;
-				// free(root);
-				// return tempr;
-				// break;
+			// case 3:
+			// 	printNodeInfo(root);
+			// 	// printf("No prob till before this***************************\n");
+			// 	// printf("%d\n",root->parent->firstChild != root);
+			// 	if(root->parent->firstChild == root){
+			// 		root->parent->firstChild = root->firstChild;
+			// 		root->firstChild->parent = root->parent;
+			// 		tree* tempr = root->firstChild;
+			// 		tempr->sibling = root->sibling;
+			// 		printf("No prob***************************\n");
+			// 		free(root);
+			// 		return tempr;
+
+			// 	}
+			// 	else{
+			// 		tree* tempchild = root->parent->firstChild; 
+			// 		printf("No prob till this 1***************************\n");
+
+			// 		while(tempchild->sibling && (tempchild->sibling != root)){
+			// 			tempchild = tempchild->sibling;
+			// 		}
+			// 		printf("No prob till this 2***************************\n");
+
+			// 		tempchild->sibling = root->firstChild;
+			// 		printf("No prob till this 3***************************\n");
+					
+			// 		root->firstChild->parent = root->parent;
+			// 		printf("No prob till this 4***************************\n");
+					
+			// 		tree* tempr = root->firstChild;
+			// 		tempr->sibling = root->sibling;
+			// 		free(root);
+			// 		return tempr;
+			// 	}				
+				
+			// 	break;
 
 			default:
 				return root;
