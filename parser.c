@@ -546,7 +546,7 @@ void printStack(){
 tree* expand_node(tree* node, int rule, int lineNo){
 	tree *temp, *temp3;
 	stack *temp2;
-
+	numberNodesParseTree++;
 	temp = (tree*)malloc(sizeof(tree));
 	temp->id = grammar[rule].next->data;
 	temp->lineNo = lineNo;
@@ -558,6 +558,7 @@ tree* expand_node(tree* node, int rule, int lineNo){
 
 	temp2 = grammar[rule].next->next;
 	while(temp2){
+		numberNodesParseTree++;
 		temp3 = (tree*)malloc(sizeof(tree));
 		temp3->lineNo = lineNo;
 		temp3->ruleUsed = 0;
@@ -700,6 +701,8 @@ parseTree parseInputSourceCode(char *testcaseFile){
 	// printf("Token - %d, %s\n",L.id, L.value);
 	push(termToID("ENDOFINPUT"));
 	push(termToID("mainFunction"));
+	numberNodesParseTree = 1;
+
 	parseTree root = (parseTree)malloc(sizeof(tree));
 	root->id = L.id;
 	root->lineNo = 0;

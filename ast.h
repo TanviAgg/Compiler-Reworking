@@ -9,6 +9,7 @@
 
 parseTree createAST(parseTree root);
 void createASTHelper(parseTree root);
+void countNumberOfNodesAST(parseTree root);
 
 int numberNodesAST;
 

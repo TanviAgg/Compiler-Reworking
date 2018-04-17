@@ -8,11 +8,28 @@
 #include "parserDef.h"
 #include "lexer.h"
 
+void countNumberOfNodesAST(parseTree root){
+	tree* temp = root;
+	if(temp->firstChild){
+		countNumberOfNodesAST(temp->firstChild);
+	}
+	numberNodesAST++;	
+	if(root->firstChild && root->firstChild->sibling){
+		tree* temp2 = root->firstChild->sibling;
+		while(temp2){
+			countNumberOfNodesAST(temp2);
+			temp2 = temp2->sibling;
+		}
+	}
+}
 //This function takes parsetree as input and creates AST in-place (it reuses nodes from parsetree)
 void createASTHelper(parseTree root){
 	tree* temp = root;
 	createAST(root);
-	printf("created AST successfully.\n");
+	numberNodesAST = 0;
+	countNumberOfNodesAST(temp);
+
+	printf("created AST successfully %d - %d.\n", numberNodesAST, numberNodesParseTree);
 	// printNodeInfo(temp->firstChild);
 	printParseTree(temp);
 	// printParseTree(root);
@@ -228,6 +245,7 @@ parseTree createAST(parseTree root){
 					memset(c,0,20);
 					IDtoterm(root->id, c);
 					printf("skipped this node - %s\n", c);
+
 					return root->firstChild = createAST(root->firstChild);
 					break;
 
@@ -246,7 +264,6 @@ parseTree createAST(parseTree root){
 			IDtoterm(root->id, c);
 			printf("shifted children of this node upwards - %s\n", c);
 			free(root);
-			// root = NULL;
 			return temp2 = createAST(temp2);
 			// printParseTree(root);
 			
@@ -295,7 +312,7 @@ parseTree createAST(parseTree root){
 				default:
 					memset(c,0,20);
 					IDtoterm(root->id, c);
-					printf("useful terminal - %s\n", c);	
+					printf("useful terminal - %s\n", c);
 					return root;
 
 			}
@@ -308,10 +325,6 @@ parseTree createAST(parseTree root){
 			printf("removed useless terminal - %s\n", c);
 			free(root);
 			return NULL;
-			// root = NULL;
-			// printParseTree(root);
-
-			// free(root);
 		}
 
 	}
@@ -333,7 +346,6 @@ parseTree createAST(parseTree root){
 			IDtoterm(root->id, c);
 			printf("removed useless terminal and moving to sibling - %s\n", c);
 			free(root);
-			// root = NULL;
 			return temp = createAST(temp);
 			// printParseTree(root);
 
