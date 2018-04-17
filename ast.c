@@ -255,10 +255,51 @@ parseTree createAST(parseTree root){
 	}
 	else if(root->sibling == NULL && root->firstChild == NULL){
 		if(root->id == 50 || root->id == 51 || root->id == 52 || root->id == 53 || root->id == 54 || root->id == 55 ||root->id == 56 ||root->id == 58 || root->id == 59 || root->id == 64 || root->id == 65 || root->id == 66 || root->id == 67 || root->id == 68 || root->id == 69 ||root->id == 70 || root->id == 71 || root->id == 72 || root->id == 73 || root->id == 74 || root->id == 75 || root->id == 76 || root->id == 77 ||root->id == 78 || root->id == 79||root->id == 80 || root->id == 81 ){
-			memset(c,0,20);
-			IDtoterm(root->id, c);
-			printf("useful terminal - %s\n", c);	
-			return root;		
+			switch(root->id){
+				case 66:
+					if(root->parent->id == 31 || root->parent->id ==32){
+						root->parent->id = root->id;
+						root->parent->lexeme = (char*)malloc(sizeof(char));
+						strcpy(root->parent->lexeme,"+");
+						free(root);
+						return NULL;
+					}
+					break;
+				case 67:
+					if(root->parent->id == 31 || root->parent->id ==32){
+						root->parent->id = root->id;
+						root->parent->lexeme = (char*)malloc(sizeof(char));
+						strcpy(root->parent->lexeme,"-");
+						free(root);
+						return NULL;
+					}
+					break;
+				case 68:
+					if(root->parent->id == 31 || root->parent->id ==32){
+						root->parent->id = root->id;
+						root->parent->lexeme = (char*)malloc(sizeof(char));
+						strcpy(root->parent->lexeme,"*");
+						free(root);
+						return NULL;
+					}
+					break;
+				case 69:
+					if(root->parent->id == 31 || root->parent->id ==32){
+						root->parent->id = root->id;
+						root->parent->lexeme = (char*)malloc(sizeof(char));
+						strcpy(root->parent->lexeme,"/");
+						free(root);
+						return NULL;
+					}
+					break;
+				default:
+					memset(c,0,20);
+					IDtoterm(root->id, c);
+					printf("useful terminal - %s\n", c);	
+					return root;
+
+			}
+					
 		}
 		else{
 			root->parent->firstChild = NULL;

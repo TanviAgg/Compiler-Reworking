@@ -24,5 +24,7 @@ void printParseTreeHelper(parseTree pt);
 void printNodeInfo(tree* node);
 
 int errorInParser;
+int numberNodesParseTree;
+
 
 #endif
