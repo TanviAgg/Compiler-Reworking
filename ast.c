@@ -351,6 +351,32 @@ parseTree createAST(parseTree root){
 
 		root->firstChild = createAST(root->firstChild);
 		switch(root->id){
+			//factor to var
+			case 30:
+				if(root->ruleUsed == 54){
+					root->parent->firstChild = root->firstChild;
+					root->firstChild->parent = root->parent;
+					tree* tempr = root->firstChild;
+					free(root);
+					return tempr;
+				}
+				else{
+					return root;
+				}
+				break;
+			//type in declaration statement
+			case 7:
+				if(root->parent->ruleUsed == 21){
+					root->parent->firstChild = root->firstChild;
+					root->firstChild->parent = root->parent;
+					tree* tempr = root->firstChild;
+					free(root);
+					return tempr;
+				}
+				else{
+					return root;
+				}
+				break;
 			//op_low/op_high
 			// case 31:
 			// case 32:
