@@ -380,17 +380,15 @@ parseTree createAST(parseTree root){
 			//op_low/op_high
 			// case 31:
 			// case 32:
-			//type
-			// case 7:
-			// //lhs_singlevar
-			// case 14:
-			// 	root->parent->firstChild = root->firstChild;
-			// 	root->firstChild->parent = root->parent;
-			// 	tree* tempr = root->firstChild;
-			// 	tempr->sibling = root->sibling;
-			// 	free(root);
-			// 	return tempr;
-			// 	break;
+			//lhs_singlevar
+			case 14:
+				root->parent->firstChild = root->firstChild;
+				root->firstChild->parent = root->parent;
+				tree* tempr = root->firstChild;
+				tempr->sibling = root->sibling;
+				free(root);
+				return tempr;
+				break;
 			//stmtOrFunctionDef
 			// case 3:
 			// 	printNodeInfo(root);
