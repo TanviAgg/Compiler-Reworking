@@ -238,9 +238,11 @@ parseTree createAST(parseTree root){
 			switch(root->id){
 				//arithmeticExpression
 				case 26:
+				case 5:
 					root->firstChild = createAST(root->firstChild);
 					return root;
 					break;
+
 				default:
 					memset(c,0,20);
 					IDtoterm(root->id, c);
@@ -381,6 +383,7 @@ parseTree createAST(parseTree root){
 				if(root->parent->ruleUsed == 21){
 					root->parent->firstChild = root->firstChild;
 					root->firstChild->parent = root->parent;
+					root->firstChild->sibling = root->sibling;
 					tree* tempr = root->firstChild;
 					free(root);
 					return tempr;

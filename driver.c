@@ -6,7 +6,7 @@
 #include "lexer.h"
 #include "parser.h"
 #include "ast.h"
-
+#include "symbolTable.h"
 
 void idToTerm(int id, char*c){
 	switch(id){
@@ -242,8 +242,10 @@ int main(int argc, char const *argv[])
 		printf("\n");
 		
 		createASTHelper(temptree);
-		// printParseTreeHelper(temptree);
+		
 		printf("------------------------------------\n");
+		hashnode* h = populateSymbolTable(temptree);
+		printhashTable(h);
 		
 	}	
 	return 0;

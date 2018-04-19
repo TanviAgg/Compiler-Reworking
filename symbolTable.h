@@ -9,8 +9,8 @@
 #include "ast.h"
 
 struct hashEntry{
-	char *name;
-	char *type;
+	char name[20];
+	char type[6];
 	int width;
 	int offset;
 };
@@ -19,7 +19,7 @@ typedef struct hashEntry hashEntry;
 
 struct hashnode{
 	char *scopeID;
-	hashEntry *hashtable[100];
+	hashEntry *hashTable[100];
 	struct hashnode *firstChild;
 	struct hashnode *sibling;
 	struct hashnode *parent;
@@ -29,7 +29,11 @@ typedef struct hashnode hashnode;
 
 int hashFunction(char *c);
 
-parseTree populateSymbolTable(parseTree root);
+hashnode* populateSymbolTable(tree* root);
+void symbolTableHelper(tree* root, hashnode* hashnode);
 
+void addEntryToTable(hashEntry *entry, hashnode* symbolTable);
+void printhashTable(hashnode* symbolTable);
 
+int offset;
 #endif
