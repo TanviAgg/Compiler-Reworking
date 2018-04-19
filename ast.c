@@ -23,15 +23,16 @@ void countNumberOfNodesAST(parseTree root){
 	}
 }
 //This function takes parsetree as input and creates AST in-place (it reuses nodes from parsetree)
-void createASTHelper(parseTree root){
+tree* createASTHelper(parseTree root){
 	tree* temp = root;
 	createAST(root);
 	numberNodesAST = 0;
 	countNumberOfNodesAST(temp);
 
-	printf("created AST successfully %d - %d.\n", numberNodesAST, numberNodesParseTree);
+	return root;
+	// printf("created AST successfully %d - %d.\n", numberNodesAST, numberNodesParseTree);
 	// printNodeInfo(temp->firstChild);
-	printParseTree(temp);
+	// printParseTree(temp);
 	// printParseTree(root);
 }
 // void createAST(parseTree root){

@@ -686,6 +686,7 @@ void printNodeInfo(tree *node){
 }
 
 parseTree parseInputSourceCode(char *testcaseFile){
+	errorInParser = 0;
 	char* b = (char*) malloc(sizeof(char)*20);
 	int k = 20;
 	FILE *fp = fopen(testcaseFile, "r");
@@ -830,7 +831,8 @@ parseTree parseInputSourceCode(char *testcaseFile){
 		return root;
 	}
 	else if((L.id == (termToID("ENDOFINPUT")-44)) && (top->data == termToID("ENDOFINPUT"))){
-		printf("Successful Compilation. Your code is syntactically correct.\n");
+		errorInParser = 0;
+		// printf("Successful Compilation. Your code is syntactically correct.\n");
 		// printStack();
 		return root;
 	}

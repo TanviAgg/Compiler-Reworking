@@ -23,6 +23,7 @@ struct hashnode{
 	struct hashnode *firstChild;
 	struct hashnode *sibling;
 	struct hashnode *parent;
+	int nesting_level;
 };
 
 typedef struct hashnode hashnode;

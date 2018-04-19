@@ -20,12 +20,14 @@ int hashFunction(char *c){
 
 hashnode* populateSymbolTable(tree* root){
 	offset = 0;
-	char c[] = "_main";
+	// char c[] = "_main";
 	hashnode* rootHashnode = (hashnode *)malloc(sizeof(hashnode));
-	rootHashnode->scopeID = c;
+	rootHashnode->scopeID = (char*)malloc(sizeof(char)*6);
+	strcpy(rootHashnode->scopeID, "_main");
 	rootHashnode->sibling = NULL;
 	rootHashnode->parent = NULL;
 	rootHashnode->firstChild = NULL;
+	rootHashnode->nesting_level = 1;
 	printf("fine till root hashnode\n");
 	symbolTableHelper(root, rootHashnode);
 	return rootHashnode;
@@ -43,13 +45,26 @@ void printhashTable(hashnode* root){
 	if(temp->firstChild){
 		printhashTable(temp->firstChild);
 	}
-	printf("*****printing hashtable******%s\n", temp->scopeID);
+	// printf("%-20s%-20s%-12s%-20s%-10s%-10s%-10s\n","Identifier_name", "scope", "nesting_level", "parent of current scope", "type", "width", "offset");
+
+	// printf("*****printing hashtable******%s\n", temp->scopeID);
+	// printf("------------------------------------\n");
+	printf("\n");
 	int index = 0;
 	for(index = 0; index < 100; index++){
 		if(temp->hashTable[index]!=NULL){
-			printf("%s, %s, %d, %d\n",temp->hashTable[index]->name,temp->hashTable[index]->type,temp->hashTable[index]->width,temp->hashTable[index]->offset);
+			if(temp->parent)
+				printf("%-20s%-20s%-15d%-25s%-10s%-10d%-10d\n",temp->hashTable[index]->name, temp->scopeID, temp->nesting_level, temp->parent->scopeID, temp->hashTable[index]->type, temp->hashTable[index]->width,temp->hashTable[index]->offset);
+			else{
+				printf("%-20s%-20s%-15d%-25s%-10s%-10d%-10d\n",temp->hashTable[index]->name, temp->scopeID, temp->nesting_level, "ROOT", temp->hashTable[index]->type, temp->hashTable[index]->width,temp->hashTable[index]->offset);
+
+			}
+
+			// printf("%s, %s, %d, %d\n",temp->hashTable[index]->name,temp->hashTable[index]->type,temp->hashTable[index]->width,temp->hashTable[index]->offset);
 		}	
 	}
+	// printf("------------------------------------\n");
+
 	if(root->firstChild && root->firstChild->sibling){
 		hashnode* temp2 = root->firstChild->sibling;
 		while(temp2){
@@ -223,6 +238,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 		newHashnode->scopeID = tempt->lexeme;
 		newHashnode->sibling = NULL;
 		newHashnode->parent = symbolTable;
+		newHashnode->nesting_level = symbolTable->nesting_level + 1;
 		if(symbolTable->firstChild == NULL)
 			symbolTable->firstChild = newHashnode;
 		else{
