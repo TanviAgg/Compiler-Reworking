@@ -13,6 +13,7 @@ struct hashEntry{
 	char type[6];
 	int width;
 	int offset;
+	int lineNo;
 };
 
 typedef struct hashEntry hashEntry;

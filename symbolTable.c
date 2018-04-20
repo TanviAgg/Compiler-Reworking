@@ -35,6 +35,7 @@ hashnode* populateSymbolTable(tree* root){
 
 void addEntryToTable(hashEntry *entry, hashnode* symbolTable, int lineNo){
 	int index = hashFunction(entry->name);
+	entry->lineNo = lineNo;
 	int flag = 0;
 	while(symbolTable->hashTable[index%100] != NULL){
 		if(strcmp(symbolTable->hashTable[index%100]->name, entry->name) == 0){
