@@ -28,7 +28,7 @@ hashnode* populateSymbolTable(tree* root){
 	rootHashnode->parent = NULL;
 	rootHashnode->firstChild = NULL;
 	rootHashnode->nesting_level = 1;
-	printf("fine till root hashnode\n");
+	// printf("fine till root hashnode\n");
 	symbolTableHelper(root, rootHashnode);
 	return rootHashnode;
 }
@@ -75,22 +75,22 @@ void printhashTable(hashnode* root){
 }
 
 void symbolTableHelper(tree* root, hashnode* symbolTable){
-	printf("\n");
-	char * c = (char*)malloc(sizeof(char)*20);
-	memset(c,0,20);
-	IDtoterm(root->id, c);
+	// printf("\n");
+	// char * c = (char*)malloc(sizeof(char)*20);
+	// memset(c,0,20);
+	// IDtoterm(root->id, c);
 					
-	printf("Root ID :%s\n", c);	
+	// printf("Root ID :%s\n", c);	
 	if(root == NULL){
-		printf("Root is null, returning\n");
+		// printf("Root is null, returning\n");
 		return;
 	}
 	if(root->firstChild){
-		printf("I have a child :(\n");
+		// printf("I have a child :(\n");
 		symbolTableHelper(root->firstChild, symbolTable);
 	}
 	if(root->id == 9){
-		printf("Declaration Node\n");
+		// printf("Declaration Node\n");
 		//create an entry and add to symbolTable
 		if(root->firstChild->id == 53){
 			// printf("adding entries\n");
@@ -103,7 +103,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->width = 2;
 				newID->offset = offset;
 				offset += 2;
-				printf("adding entries\n");
+				// printf("adding entries\n");
 
 				addEntryToTable(newID, symbolTable);
 				temp = temp->sibling;
@@ -120,7 +120,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->width = 4;
 				newID->offset = offset;
 				offset += 4;
-				printf("adding entries\n");
+				// printf("adding entries\n");
 				addEntryToTable(newID, symbolTable);
 				temp = temp->sibling;
 			}
@@ -136,7 +136,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->width = 20; ///how?
 				newID->offset = offset;
 				offset += 20;
-				printf("adding entries\n");
+				// printf("adding entries\n");
 				addEntryToTable(newID, symbolTable);
 				temp = temp->sibling;
 			}
@@ -152,7 +152,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->width = 2;////*****how much space?
 				newID->offset = offset;
 				offset += 2;
-				printf("adding entries\n");
+				// printf("adding entries\n");
 				addEntryToTable(newID, symbolTable);
 				temp = temp->sibling;
 			}
@@ -161,7 +161,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 
 	}
 	else if(root->id == 6 && root->parent->id== 5 && root->sibling->id != 50){
-		printf("Parameter List\n");
+		// printf("Parameter List\n");
 		//create an entry and add to symbolTable
 		tree *temp = root->firstChild;
 		while(temp){
@@ -174,7 +174,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->width = 2;
 				newID->offset = offset;
 				offset += 2;
-				printf("adding entries\n");
+				// printf("adding entries\n");
 				addEntryToTable(newID, symbolTable);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
@@ -188,7 +188,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->width = 4;
 				newID->offset = offset;
 				offset += 4;
-				printf("adding entries\n");
+				// printf("adding entries\n");
 				addEntryToTable(newID, symbolTable);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
@@ -202,7 +202,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->width = 20;
 				newID->offset = offset;
 				offset += 20;
-				printf("adding entries\n");
+				// printf("adding entries\n");
 				addEntryToTable(newID, symbolTable);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
@@ -216,7 +216,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->width = 2;
 				newID->offset = offset;
 				offset += 2;
-				printf("adding entries\n");
+				// printf("adding entries\n");
 				addEntryToTable(newID, symbolTable);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
@@ -226,14 +226,14 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 		}
 	}
 	else if(root->id == 5){
-		printf("functionDef node. Moths are stupid creatures\n");
+		// printf("functionDef node.\n");
 		//create a new symbolTable and change to that
 		tree* tempt = root->firstChild;
 		tree* temp = tempt->firstChild;
 		while(tempt&& tempt->id != 51){
 			tempt = tempt->sibling;
 		}
-		printf("adding new hashnode\n");
+		// printf("adding new hashnode\n");
 		hashnode* newHashnode = (hashnode *)malloc(sizeof(hashnode));
 		newHashnode->scopeID = tempt->lexeme;
 		newHashnode->sibling = NULL;
@@ -249,7 +249,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 			temp2->sibling = newHashnode;
 		}
 		newHashnode->firstChild = NULL;
-		printf("fine\n");
+		// printf("fine\n");
 
 		symbolTable = newHashnode;
 		if(temp->firstChild->id == 53){
@@ -261,7 +261,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 			newID->width = 2;
 			newID->offset = offset;
 			offset += 2;
-			printf("adding entries\n");
+			// printf("adding entries\n");
 			addEntryToTable(newID, symbolTable);
 			
 		} //int
@@ -274,7 +274,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 			newID->width = 4;
 			newID->offset = offset;
 			offset += 4;
-			printf("adding entries\n");
+			// printf("adding entries\n");
 			addEntryToTable(newID, symbolTable);
 		} //REAL
 		else if(temp->firstChild->id == 55){
@@ -286,7 +286,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 			newID->width = 20;
 			newID->offset = offset;
 			offset += 20;
-			printf("adding entries\n");
+			// printf("adding entries\n");
 			addEntryToTable(newID, symbolTable);
 			if(temp && temp->sibling)
 				temp = temp->sibling->sibling;
@@ -300,7 +300,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 			newID->width = 2;
 			newID->offset = offset;
 			offset += 2;
-			printf("adding entries\n");
+			// printf("adding entries\n");
 			addEntryToTable(newID, symbolTable);
 			if(temp && temp->sibling)
 				temp = temp->sibling->sibling;
@@ -308,7 +308,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 
 	}
 	if(root->firstChild && root->firstChild->sibling){
-		printf("Siblings are annoying :P\n");
+		// printf("Siblings are annoying \n");
 		tree* temp2 = root->firstChild->sibling;
 		while(temp2){
 			symbolTableHelper(temp2, symbolTable);

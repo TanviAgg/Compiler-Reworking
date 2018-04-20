@@ -22,6 +22,9 @@ parseTree parseInputSourceCode(char *testcaseFile);
 void printParseTree(parseTree PT);
 void printParseTreeHelper(parseTree pt);
 void printNodeInfo(tree* node);
+// void copyParseTree(tree* node, tree*temp);
+// tree *copynode(tree *node);
+
 
 int errorInParser;
 int numberNodesParseTree;

@@ -15,6 +15,28 @@ FirstAndFollow  *ComputeFirstAndFollowSets(grammar G): This function takes as in
 The weight for the above is only 5 marks out of 45 marks reserved for stage 1 module. If a student opts  not to develop the module for computation of First and follow sets, then he/she can use the manually computed FIRST and FOLLOW sets, and populate in the appropriate data structures.
 
 */
+
+
+//  void copyParseTree(tree *node, tree* temp){
+// 	temp = (tree*)malloc(sizeof(tree));
+// 	temp->id = node->id;
+// 	temp->lineNo = node->lineNo;
+// 	temp->ruleUsed = node->ruleUsed;
+// 	temp->lexeme = (char*)malloc(sizeof(char)*strlen(node->lexeme));
+// 	strcpy(temp->lexeme, node->lexeme);
+// 	if(node->firstChild)
+// 		copyParseTree(node->firstChild, temp->firstChild);
+// 	if(node->firstChild && node->firstChild->sibling){
+// 		tree* temp2 = node->firstChild;
+// 		tree* temp3 = temp->firstChild;
+// 		while(temp2->sibling){
+// 			copyParseTree(temp2->sibling, temp3->sibling);
+// 			temp2 = temp2->sibling;
+// 			temp3 = temp3->sibling;
+// 		}
+// 	}	
+// }
+
 int IDtoterm(int id, char *c){
 	switch(id){
 	case 0: strcpy(c, "mainFunction");
