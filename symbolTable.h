@@ -33,7 +33,7 @@ int hashFunction(char *c);
 hashnode* populateSymbolTable(tree* root);
 void symbolTableHelper(tree* root, hashnode* hashnode);
 
-void addEntryToTable(hashEntry *entry, hashnode* symbolTable);
+void addEntryToTable(hashEntry *entry, hashnode* symbolTable, int lineNo);
 void printhashTable(hashnode* symbolTable);
 
 int offset;

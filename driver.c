@@ -278,8 +278,12 @@ int main(int argc, char const *argv[])
 				}	
 			}
 			temp5 = temp3;
+			printf("------------------------------------\n");
+			
 			hashnode* h = populateSymbolTable(temp5);
 			symbolTableCreated = 1;
+			printf("------------------------------------\n");
+
 			printf("Printing symbolTables\n");
 			printf("------------------------------------\n");
 

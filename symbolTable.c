@@ -33,11 +33,20 @@ hashnode* populateSymbolTable(tree* root){
 	return rootHashnode;
 }
 
-void addEntryToTable(hashEntry *entry, hashnode* symbolTable){
+void addEntryToTable(hashEntry *entry, hashnode* symbolTable, int lineNo){
 	int index = hashFunction(entry->name);
-	while(symbolTable->hashTable[index%100] != NULL)
+	int flag = 0;
+	while(symbolTable->hashTable[index%100] != NULL){
+		if(strcmp(symbolTable->hashTable[index%100]->name, entry->name) == 0){
+			printf("Semantic error: Line no. %d: Multiple declarations of variable.\n",lineNo);
+			flag = 1;
+			break;
+		}
 		index++;
-	symbolTable->hashTable[index%100] = entry;
+	}
+	if(!flag){
+		symbolTable->hashTable[index%100] = entry;
+	}
 }
 
 void printhashTable(hashnode* root){
@@ -105,7 +114,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				offset += 2;
 				// printf("adding entries\n");
 
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable, temp->lineNo);
 				temp = temp->sibling;
 			}
 		} //int
@@ -121,7 +130,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 4;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable, temp->lineNo);
 				temp = temp->sibling;
 			}
 
@@ -137,7 +146,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 20;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable, temp->lineNo);
 				temp = temp->sibling;
 			}
 
@@ -153,7 +162,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 2;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable, temp->lineNo);
 				temp = temp->sibling;
 			}
 
@@ -175,7 +184,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 2;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable, temp->lineNo);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
 			} //int
@@ -189,7 +198,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 4;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable, temp->lineNo);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
 			} //REAL
@@ -203,7 +212,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 20;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable,temp->lineNo);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
 			} //STRING
@@ -217,7 +226,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 2;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable, temp->lineNo);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
 			} //MATRIX
@@ -233,6 +242,8 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 		while(tempt&& tempt->id != 51){
 			tempt = tempt->sibling;
 		}
+
+
 		// printf("adding new hashnode\n");
 		hashnode* newHashnode = (hashnode *)malloc(sizeof(hashnode));
 		newHashnode->scopeID = tempt->lexeme;
@@ -263,7 +274,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 2;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable,temp->sibling->lineNo);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
 				
@@ -278,7 +289,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 4;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable,temp->sibling->lineNo);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
 			} //REAL
@@ -292,7 +303,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 20;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable,temp->sibling->lineNo);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
 			} //STRING
@@ -306,7 +317,7 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 				newID->offset = offset;
 				offset += 2;
 				// printf("adding entries\n");
-				addEntryToTable(newID, symbolTable);
+				addEntryToTable(newID, symbolTable,temp->sibling->lineNo);
 				if(temp && temp->sibling)
 					temp = temp->sibling->sibling;
 			} 
