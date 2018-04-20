@@ -231,8 +231,8 @@ parseTree createAST(parseTree root){
 	// IDtoterm(root->id, c);
 	// printf("Node id %s\n", c );
 	if(root==NULL){
-		printf("reaching here\n");
-		return;
+		// printf("reaching here\n");
+		return NULL;
 	}
 	if(root->sibling == NULL && root->firstChild != NULL){
 		if(root->id == 0 || root->id == 5 || root->id == 9 || root->id == 12 || root->id == 13 || root->id == 19 ||root->id == 22 || root->id == 23 || root->id == 26){
