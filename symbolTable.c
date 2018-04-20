@@ -252,59 +252,65 @@ void symbolTableHelper(tree* root, hashnode* symbolTable){
 		// printf("fine\n");
 
 		symbolTable = newHashnode;
-		if(temp->firstChild->id == 53){
-			// printf("adding entries\n");
-			hashEntry *newID = (hashEntry *)malloc(sizeof(hashEntry));
-			// hashEntry *newID;
-			strcpy(newID->name, temp->sibling->lexeme);
-			strcpy(newID->type, "INT");
-			newID->width = 2;
-			newID->offset = offset;
-			offset += 2;
-			// printf("adding entries\n");
-			addEntryToTable(newID, symbolTable);
-			
-		} //int
-		else if(temp->firstChild->id == 54){
-			// printf("adding entries\n");
-			hashEntry *newID = (hashEntry *)malloc(sizeof(hashEntry));
-			// hashEntry *newID;
-			strcpy(newID->name, temp->sibling->lexeme);
-			strcpy(newID->type, "REAL");
-			newID->width = 4;
-			newID->offset = offset;
-			offset += 4;
-			// printf("adding entries\n");
-			addEntryToTable(newID, symbolTable);
-		} //REAL
-		else if(temp->firstChild->id == 55){
-			// printf("adding entries\n");
-			hashEntry *newID = (hashEntry *)malloc(sizeof(hashEntry));
-			// hashEntry *newID;
-			strcpy(newID->name, temp->sibling->lexeme);
-			strcpy(newID->type, "STRING");
-			newID->width = 20;
-			newID->offset = offset;
-			offset += 20;
-			// printf("adding entries\n");
-			addEntryToTable(newID, symbolTable);
-			if(temp && temp->sibling)
-				temp = temp->sibling->sibling;
-		} //STRING
-		else if(temp->firstChild->id == 56){
-			// printf("adding entries\n");
-			hashEntry *newID = (hashEntry *)malloc(sizeof(hashEntry));
-			// hashEntry *newID;
-			strcpy(newID->name, temp->sibling->lexeme);
-			strcpy(newID->type, "MATRIX");
-			newID->width = 2;
-			newID->offset = offset;
-			offset += 2;
-			// printf("adding entries\n");
-			addEntryToTable(newID, symbolTable);
-			if(temp && temp->sibling)
-				temp = temp->sibling->sibling;
-		} 
+		while(temp){
+			if(temp->firstChild->id == 53){
+				// printf("adding entries\n");
+				hashEntry *newID = (hashEntry *)malloc(sizeof(hashEntry));
+				// hashEntry *newID;
+				strcpy(newID->name, temp->sibling->lexeme);
+				strcpy(newID->type, "INT");
+				newID->width = 2;
+				newID->offset = offset;
+				offset += 2;
+				// printf("adding entries\n");
+				addEntryToTable(newID, symbolTable);
+				if(temp && temp->sibling)
+					temp = temp->sibling->sibling;
+				
+			} //int
+			else if(temp->firstChild->id == 54){
+				// printf("adding entries\n");
+				hashEntry *newID = (hashEntry *)malloc(sizeof(hashEntry));
+				// hashEntry *newID;
+				strcpy(newID->name, temp->sibling->lexeme);
+				strcpy(newID->type, "REAL");
+				newID->width = 4;
+				newID->offset = offset;
+				offset += 4;
+				// printf("adding entries\n");
+				addEntryToTable(newID, symbolTable);
+				if(temp && temp->sibling)
+					temp = temp->sibling->sibling;
+			} //REAL
+			else if(temp->firstChild->id == 55){
+				// printf("adding entries\n");
+				hashEntry *newID = (hashEntry *)malloc(sizeof(hashEntry));
+				// hashEntry *newID;
+				strcpy(newID->name, temp->sibling->lexeme);
+				strcpy(newID->type, "STRING");
+				newID->width = 20;
+				newID->offset = offset;
+				offset += 20;
+				// printf("adding entries\n");
+				addEntryToTable(newID, symbolTable);
+				if(temp && temp->sibling)
+					temp = temp->sibling->sibling;
+			} //STRING
+			else if(temp->firstChild->id == 56){
+				// printf("adding entries\n");
+				hashEntry *newID = (hashEntry *)malloc(sizeof(hashEntry));
+				// hashEntry *newID;
+				strcpy(newID->name, temp->sibling->lexeme);
+				strcpy(newID->type, "MATRIX");
+				newID->width = 2;
+				newID->offset = offset;
+				offset += 2;
+				// printf("adding entries\n");
+				addEntryToTable(newID, symbolTable);
+				if(temp && temp->sibling)
+					temp = temp->sibling->sibling;
+			} 
+		}
 
 	}
 	if(root->firstChild && root->firstChild->sibling){
