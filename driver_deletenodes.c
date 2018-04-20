@@ -130,6 +130,23 @@ void idToTerm(int id, char*c){
 		break;
 	}
 }
+void deleteParseTree(tree *node){
+	if(node == NULL)
+		return;
+	tree * temp, *next;
+	if(node->firstChild && node->firstChild->sibling){
+		temp = node->firstChild->sibling;
+	}	
+	deleteParseTree(node->firstChild);
+
+	while(temp){
+		next = temp->sibling;
+		deleteParseTree(temp);
+		temp = next;
+	}	
+	free(node);
+}
+
 void printAllTokens(char *inputfile){
 	char* b = (char*) malloc(sizeof(char)*20);
 	memset(b,0,20);
@@ -178,9 +195,9 @@ int main(int argc, char const *argv[])
 	createParseTable(ParseTable);
 	// printf("Parse table made successfully!\n");
 	
-	int parseTreeCreated = 0;
-	int ASTcreated = 0;
-	int symbolTableCreated = 0;
+	// int parseTreeCreated = 0;
+	// int ASTcreated = 0;
+	// int symbolTableCreated = 0;
 	tree* temp2, *temp3, *temp5;
 	
 	while(1){
@@ -208,7 +225,7 @@ int main(int argc, char const *argv[])
 		}
 		else if(choice==2){
 			temp2 = parseInputSourceCode(filename);
-			parseTreeCreated = 1;
+			// parseTreeCreated = 1;
 			if(errorInParser == 0){
 				printf("Successful Compilation. Your code is syntactically correct.\n");				
 			}
@@ -219,21 +236,22 @@ int main(int argc, char const *argv[])
 			printParseTree(temp2);
 			printf("\n");
 			printf("------------------------------------\n");
+			deleteParseTree(temp2);
 			
 		}
 		else if(choice==3){
-			if(parseTreeCreated){
-				temp3 = temp2;
-				temp3 = createASTHelper(temp3);	
-				ASTcreated = 1;
-			}
-			else{
+			// if(parseTreeCreated){
+			// 	temp3 = temp2;
+			// 	temp3 = createASTHelper(temp3);	
+			// 	ASTcreated = 1;
+			// }
+			// else{
 				temp2 = parseInputSourceCode(filename);
-				parseTreeCreated = 1;
+				// parseTreeCreated = 1;
 				temp3 = temp2;
 				temp3 = createASTHelper(temp3);	
-				ASTcreated = 1;			
-			}
+				// ASTcreated = 1;			
+			// }
 
 			printf("Printing abstract syntax tree \nOrder of traversal - Inorder (FirstChild - root - otherChildren)\n");
 			printf("------------------------------------\n");
@@ -241,45 +259,45 @@ int main(int argc, char const *argv[])
 			printParseTree(temp3);
 			printf("\n");
 			printf("------------------------------------\n");
-			
+			deleteParseTree(temp3);
 		}
 		else if(choice==4){
-			if(!ASTcreated){
-				if(parseTreeCreated){
-					temp3 = temp2;
-					temp3 = createASTHelper(temp3);	
-					ASTcreated = 1;
-				}
-				else{
+			// if(!ASTcreated){
+				// if(parseTreeCreated){
+					// temp3 = temp2;
+					// temp3 = createASTHelper(temp3);	
+					// ASTcreated = 1;
+				// }
+				// else{
 					temp2 = parseInputSourceCode(filename);
-					parseTreeCreated = 1;
+					// parseTreeCreated = 1;
 					temp3 = temp2;
 					temp3 = createASTHelper(temp3);	
-					ASTcreated = 1;		
-				}	
-			}
+					// ASTcreated = 1;		
+				// }	
+			// }
 			printf("Memory allocated and number of nodes: \n Number of nodes in parse tree = %d \t Memory Allocated = %ld Bytes \n Number of nodes in AST = %d \t Memory Allocated = %ld Bytes \n Compression percentage = %f.\n",numberNodesParseTree, numberNodesParseTree*sizeof(tree), numberNodesAST, numberNodesAST*sizeof(tree), (float)(numberNodesParseTree-numberNodesAST)/numberNodesParseTree*100);
 			
 			
 		}
 		else if(choice==5){
-			if(!ASTcreated){
-				if(parseTreeCreated){
-					temp3 = temp2;
-					temp3 = createASTHelper(temp3);	
-					ASTcreated = 1;
-				}
-				else{
+			// if(!ASTcreated){
+				// if(parseTreeCreated){
+					// temp3 = temp2;
+					// temp3 = createASTHelper(temp3);	
+					// ASTcreated = 1;
+				// }
+				// else{
 					temp2 = parseInputSourceCode(filename);
-					parseTreeCreated = 1;
+					// parseTreeCreated = 1;
 					temp3 = temp2;
 					temp3 = createASTHelper(temp3);	
-					ASTcreated = 1;		
-				}	
-			}
+					// ASTcreated = 1;		
+				// }	
+			// }
 			temp5 = temp3;
 			hashnode* h = populateSymbolTable(temp5);
-			symbolTableCreated = 1;
+			// symbolTableCreated = 1;
 			printf("Printing symbolTables\n");
 			printf("------------------------------------\n");
 
@@ -287,13 +305,14 @@ int main(int argc, char const *argv[])
 	
 			printhashTable(h);			
 			printf("------------------------------------\n");
-
+			deleteParseTree(temp3);
 		}
 		else if(choice==6){
-			if(parseTreeCreated){
+			// if(parseTreeCreated){
+				temp2 = parseInputSourceCode(filename);
 				if(errorInParser == 0)
 				printf("syntactically correct\n");
-			}
+			// }
 			
 		}
 		else if(choice==7){
